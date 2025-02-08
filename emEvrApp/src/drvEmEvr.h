@@ -6,7 +6,7 @@
  * Last Modified By  : chengsn <chengsn@ihep.ac.cn>
  * Description       : header File              : drvEmEvr.h
  *
- * Copyright (c) 2022 chengsn <chengsn@ihep.ac.cn>
+ * Copyright (c) 2025 chengsn <chengsn@ihep.ac.cn>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -71,10 +71,11 @@ typedef struct emEvrStruct {
     epicsUInt16 event_map[EVENT_NUM];
     /* Record processing struct */
     IOSCANPVT ioscan_pvt[EVENT_NUM];
-} emEvrStruct;
-
+} EmEvrStruct;
 
 /**********************************************************************
  *         Function Prototypes For Driver Support Routines            *
  **********************************************************************/
+
+EmEvrStruct* get_emEvr();
 void extract_ld(const char *input, char *letters, int *digit);
