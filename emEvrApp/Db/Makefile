@@ -8,7 +8,7 @@ include $(TOP)/configure/CONFIG
 # If <anyname>.db template is not named <anyname>*.template add
 # <anyname>_TEMPLATE = <templatename>
 
-# DB += <anyname>
+DB += emEvr.db
 
 include $(TOP)/configure/RULES
 #----------------------------------------

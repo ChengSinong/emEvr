@@ -10,21 +10,13 @@ USR_CPPFLAGS += -DUSE_TYPED_RSET
 # Build an IOC support library
 LIBRARY_IOC += emEvrSupport
 
-# Compile and add code to the support library
-emEvrSupport_SRCS += xxxRecord.c
-
 # Link locally-provided code into the support library,
 # rather than directly into the IOC application, that
-# causes problems on Windows DLL builds
-emEvrSupport_SRCS += devemEvrVersion.c
+# causes problems on Windows DLL builds 
+emEvrSupport_SRCS += drvEmEvr.c
+emEvrSupport_SRCS += devEmEvr.c
 
 emEvrSupport_LIBS += $(EPICS_BASE_IOC_LIBS)
-
-# Auto-generate a header file containing a version string.
-# Version comes from the VCS if available, else date+time.
-GENVERSION = emEvrVersion.h
-# Macro name
-GENVERSIONMACRO = emEvrVERSION
 
 # Build the IOC application
 PROD_IOC = emEvr
@@ -34,6 +26,7 @@ DBD += emEvr.dbd
 
 # emEvr.dbd will include these files:
 emEvr_DBD += base.dbd
+emEvr_DBD += devEmEvr.dbd
 
 # emEvr_registerRecordDeviceDriver.cpp derives from emEvr.dbd
 emEvr_SRCS += emEvr_registerRecordDeviceDriver.cpp

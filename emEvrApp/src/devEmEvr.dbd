@@ -1,0 +1,2 @@
+registrar(configure_emEvrRegister)
+device(ai, INST_IO, devReadAI, "emEvr")

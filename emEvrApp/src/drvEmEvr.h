@@ -32,6 +32,9 @@
  **********************************************************************/
 /* Standard C Library Headers */
 #include <stdbool.h>
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
 
 /* EPICS Base Headers */
 #include <epicsTypes.h>  /* EPICS Architecture-independent type definitions */
@@ -58,7 +61,7 @@ typedef struct emEvrStruct {
     /* Pointer to the event receiver register map */
     epicsUInt32 *pEr;
     /* ER device fd */
-    int fd;
+    epicsInt32 fd;
     /* irq thread id */
     epicsThreadId tid;
     /* Pointer to user function */
@@ -78,4 +81,6 @@ typedef struct emEvrStruct {
  **********************************************************************/
 
 EmEvrStruct* get_emEvr();
-void extract_ld(const char *input, char *letters, int *digit);
+void process_otw(EmEvrStruct*, epicsUInt32, epicsFloat64);
+void process_otd(EmEvrStruct*, epicsUInt32, epicsFloat64);
+void process_fps(EmEvrStruct*, epicsUInt32, epicsFloat64);

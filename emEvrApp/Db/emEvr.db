@@ -1,0 +1,20 @@
+record(ai, "emEvr:OTW13") {
+    field(DESC, "OTW 13 of EmEvr")
+    field(DTYP, "emEvr")
+    field(INP, "@otw13")
+    field(VAL, "21")
+}
+
+record(ai, "emEvr:OTD13") {
+    field(DESC, "OTD 13 of EmEvr")
+    field(DTYP, "emEvr")
+    field(INP, "@otd13")
+    field(VAL, "2100")
+}
+
+record(ai, "emEvr:FPS13") {
+    field(DESC, "FPS 13 of EmEvr")
+    field(DTYP, "emEvr")
+    field(INP, "@fps13")
+    field(VAL, "21")
+}
