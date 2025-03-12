@@ -12,9 +12,8 @@ dbLoadDatabase "dbd/emEvr.dbd"
 emEvr_registerRecordDeviceDriver pdbbase
 
 ## Load record instances
-dbLoadTemplate "db/user.substitutions"
-dbLoadRecords "db/emEvrVersion.db", "user=control"
-dbLoadRecords "db/dbSubExample.db", "user=control"
+
+dbLoadRecords "db/emEvr.db", "user=control"
 
 #- Set this to see messages from mySub
 #-var mySubDebug 1
@@ -23,6 +22,10 @@ dbLoadRecords "db/dbSubExample.db", "user=control"
 #-traceIocInit
 
 cd "${TOP}/iocBoot/${IOC}"
+
+configure_emEvr("uio0",0)
+configure_event_handler
+
 iocInit
 
 ## Start any sequence programs

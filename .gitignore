@@ -30,3 +30,4 @@ O.*/
 *.log
 .*.swp
 .DS_Store
+/.history/

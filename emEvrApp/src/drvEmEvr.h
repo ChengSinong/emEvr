@@ -2,9 +2,9 @@
  * File              : drvEmEvr.h
  * Author            : chengsn <chengsn@ihep.ac.cn>
  * Date              : 2025-02-08
- * Last Modified Date: 2025-02-08
+ * Last Modified Date: 2025-03-10
  * Last Modified By  : chengsn <chengsn@ihep.ac.cn>
- * Description       : header File              : drvEmEvr.h
+ * Description       : Header file for Event Receiver (EmEvr) driver
  *
  * Copyright (c) 2025 chengsn <chengsn@ihep.ac.cn>
  *
@@ -27,60 +27,102 @@
  * SOFTWARE.
  */
 
-/**********************************************************************
- *              Other Header Files Required by This File              *
- **********************************************************************/
-/* Standard C Library Headers */
+#ifndef DRV_EM_EVR_H
+#define DRV_EM_EVR_H
+ 
+ /**********************************************************************
+  *                         Required Headers                           *
+  **********************************************************************/
 #include <stdbool.h>
 #include <string.h>
-#include <stdio.h>
-#include <ctype.h>
-
-/* EPICS Base Headers */
-#include <epicsTypes.h>  /* EPICS Architecture-independent type definitions */
-#include <epicsTime.h>   /* EPICS Timestamp support library */
-/* EPICS Database and Record Support Headers */
-#include <dbScan.h>      /* EPICS Database Scan Routines and Definitions */
-#include <epicsThread.h>   /* EPICS thread library */
-
-/* EPICS Menu Definitions */
-/* #include <menuYesNo.h> */ /* Choice menu for "Yes/No" fields */
-
+#include <stdint.h>
+#include <epicsTypes.h>
+#include <epicsTime.h>
+#include <epicsThread.h>
+#include <dbScan.h>
+ 
 /**********************************************************************
  *                         Macro Definitions                          *
  **********************************************************************/
-#define EVENT_NUM 256
-
+#define EVENT_NUM 256 /* Number of supported event codes */
+ 
 /**********************************************************************
- *                          Device Prototype                          *
+ *          Prototype Structure and Function Declarations             *
  **********************************************************************/
-/* ER structure prototype */
-typedef struct emEvrStruct {
-    /* Pointer to the event receiver record */
-    epicsUInt32 *pRec;
+/* Micro TCA Event Receiver card structure prototype */
+typedef struct EmEvrStruct EmEvrStruct;
+ /* Event handler function prototypes */
+typedef void (*EVENT_FUNC)(void);                     /* Generic event handler */
+typedef void (*DEV_EVENT_FUNC)(struct EmEvrStruct*, epicsInt16, epicsTimeStamp*); /* Device event handler */
+ 
+/* Event Receiver (EmEvr) structure */
+typedef struct EmEvrStruct {
     /* Pointer to the event receiver register map */
     epicsUInt32 *pEr;
-    /* ER device fd */
+ 
+    /* ER device file descriptor */
     epicsInt32 fd;
-    /* irq thread id */
+ 
+    /* Interrupt thread ID */
     epicsThreadId tid;
-    /* Pointer to user function */
-    void* event_func;
-    /* Mapping RAM enable */
+ 
+    /* Pointer to user-defined event handler */
+    EVENT_FUNC event_func;
+ 
+    /* Pointer to device-support event handling routine */
+    DEV_EVENT_FUNC dev_event_func;
+ 
+    /* Mapping RAM enable flag */
     bool ram_ena;
+ 
     /* Event timestamps */
     epicsTimeStamp event_ts[EVENT_NUM];
+ 
     /* Current view of mapping RAM */
     epicsUInt16 event_map[EVENT_NUM];
-    /* Record processing struct */
-    IOSCANPVT ioscan_pvt[EVENT_NUM];
-} EmEvrStruct;
-
+ 
+    /* Record processing structure */
+    IOSCANPVT ioscan_pvt;
+};
+ 
 /**********************************************************************
  *         Function Prototypes For Driver Support Routines            *
  **********************************************************************/
-
+/**
+ * Retrieves a pointer to the EmEvr structure.
+ * @return Pointer to the EmEvr structure.
+ */
 EmEvrStruct* get_emEvr();
-void process_otw(EmEvrStruct*, epicsUInt32, epicsFloat64);
-void process_otd(EmEvrStruct*, epicsUInt32, epicsFloat64);
-void process_fps(EmEvrStruct*, epicsUInt32, epicsFloat64);
+
+/**
+ * Registers a device-support level event handler.
+ * @param emEvr        Pointer to the EmEvr structure.
+ * @param dev_event_func Device-support event handler function.
+ */
+void register_device_event_handler(EmEvrStruct *emEvr, DEV_EVENT_FUNC dev_event_func);
+ 
+/**
+ * Processes the output pulse width.
+ * @param emEvr Pointer to the EmEvr structure.
+ * @param digit Channel of the pulse.
+ * @param value Value of the pulse width.
+ */
+void process_otw(EmEvrStruct *emEvr, epicsUInt32 digit, epicsFloat64 value);
+
+/**
+ * Processes the output pulse delay.
+ * @param emEvr Pointer to the EmEvr structure.
+ * @param digit Channel of the pulse.
+ * @param value Value of the pulse delay.
+ */
+void process_otd(EmEvrStruct *emEvr, epicsUInt32 digit, epicsFloat64 value);
+ 
+/**
+ * Processes the front panel switch.
+ * @param emEvr Pointer to the EmEvr structure.
+ * @param digit Channel of the switch.
+ * @param value Value of the switch.
+ */
+void process_fps(EmEvrStruct *emEvr, epicsUInt32 digit, epicsFloat64 value);
+
+#endif /* DRV_EM_EVR_H */

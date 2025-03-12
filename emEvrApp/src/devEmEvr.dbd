@@ -1,2 +1,3 @@
 registrar(configure_emEvrRegister)
-device(ai, INST_IO, devReadAI, "emEvr")
+device(ai, INST_IO, devReadAI, "Micro TCA Event Receiver")
+registrar(configure_event_handlerRegister)
