@@ -66,7 +66,7 @@
 /* the default memory page size of the Linux Kernel is 4KB */
 #define BASE_PAGE_SIZE 4096UL
 /* the size of the device uio0 is 48MB */
-#define PAGE_SIZE 12 * 1024 * BASE_PAGE_SIZE
+#define PAGE_SIZE 5 * 4 * 1024 * BASE_PAGE_SIZE
 /* page mask */
 #define PAGE_MASK (PAGE_SIZE - 1)
 /* bse address of the register map */
@@ -83,6 +83,9 @@
 /* number of event codes */
 #define EVENT_NUM 256
 
+/* The frequency of the timestamp clock is 100 MHz
+ * so, the timestamp clock period is 1 s / 100 MHz = 10 ns
+ */
 /* timestamp clock nanosecond conversion factor */
 #define NANO_CONV 10.0
 
@@ -104,15 +107,21 @@
  * the offset number.
  */
 
-// Front Panel means: Front Panel Control, and each word has 32-bit
-#define FRONT_PANEL 0x02000000
 // Trigger control means: Delay, Width and Code_id, and each control word has
 // 32-bit
-#define TRIG_CTRL 0x01000400
+#define TRIG_CTRL 0x00000400
 // Time stamp means: Seconds, NanoSeconds, Event_code, and each word has 32-bit
-#define TIME_STAMP 0x00001000
+#define TIME_STAMP 0x01001000
+// Front Panel means: Front Panel Control, and each word has 32-bit
+#define FRONT_PANEL 0x02000000
+// Latch register means: Latch Control, and each word has 32-bit
+#define LATCH 0x03000000
+
+// Latch read means: timestamp
+#define LATCH_READ 0x03001000
+
 // Code count means: Code_count, and each word has 32-bit
-#define CODE_COUNT 0x00001C00
+#define CODE_COUNT 0x04001C00
 
 /*     Register Address Offset Numbers     */
 // Front Panel Registers
