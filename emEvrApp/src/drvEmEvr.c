@@ -2,7 +2,7 @@
  * File              : drvEmEvr.c
  * Author            : chengsn <chengsn@ihep.ac.cn>
  * Date              : 2025-02-08
- * Last Modified Date: 2025-03-10
+ * Last Modified Date: 2025-03-20
  * Last Modified By  : chengsn <chengsn@ihep.ac.cn>
  * Description       : event receiver driver
  *
